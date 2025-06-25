@@ -16,6 +16,7 @@ type Props = {
   onBookmark: () => void;
   onPromote: () => void;
   isBookmarked: boolean;
+  bookmarkLabel?: string; // <-- Add this prop
 };
 
 const UserCard: React.FC<Props> = ({
@@ -24,6 +25,7 @@ const UserCard: React.FC<Props> = ({
   onBookmark,
   onPromote,
   isBookmarked,
+  bookmarkLabel,
 }) => (
   <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 flex flex-col gap-2">
     <div className="flex justify-between items-center">
@@ -44,8 +46,15 @@ const UserCard: React.FC<Props> = ({
     </div>
     <div className="flex gap-2 mt-2">
       <button className="btn btn-primary" onClick={onView}>View</button>
-      <button className={`btn ${isBookmarked ? "btn-secondary" : "btn-outline"}`} onClick={onBookmark}>
-        {isBookmarked ? "Bookmarked" : "Bookmark"}
+      <button
+        className={`btn ${isBookmarked ? "btn-secondary" : "btn-outline"}`}
+        onClick={onBookmark}
+      >
+        {bookmarkLabel
+          ? bookmarkLabel
+          : isBookmarked
+          ? "Bookmarked"
+          : "Bookmark"}
       </button>
       <button className="btn btn-success" onClick={onPromote}>Promote</button>
     </div>

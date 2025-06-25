@@ -33,6 +33,17 @@ export default function HomePage() {
   const [selectedRatings, setSelectedRatings] = useState<number[]>([]);
   const router = useRouter();
 
+  // Load bookmarks from localStorage on mount
+  useEffect(() => {
+    const saved = localStorage.getItem("bookmarks");
+    if (saved) setBookmarks(JSON.parse(saved));
+  }, []);
+
+  // Save bookmarks to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
+  }, [bookmarks]);
+
   useEffect(() => {
     fetch("https://dummyjson.com/users?limit=20")
       .then((res) => res.json())
