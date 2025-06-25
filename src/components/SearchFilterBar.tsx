@@ -1,5 +1,5 @@
 import React from "react";
-import { MagnifyingGlassIcon } from "@heroicons/react/24/outline"; // Optional: install @heroicons/react
+import { MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 
 type Props = {
   search: string;
@@ -22,8 +22,25 @@ export default function SearchFilterBar({
   selectedRatings,
   setSelectedRatings,
 }: Props) {
+  // Toggle logic for checkboxes
+  const toggleDepartment = (dept: string) => {
+    setSelectedDepartments(
+      selectedDepartments.includes(dept)
+        ? selectedDepartments.filter((d) => d !== dept)
+        : [...selectedDepartments, dept]
+    );
+  };
+
+  const toggleRating = (rating: number) => {
+    setSelectedRatings(
+      selectedRatings.includes(rating)
+        ? selectedRatings.filter((r) => r !== rating)
+        : [...selectedRatings, rating]
+    );
+  };
+
   return (
-    <div className="bg-white/80 dark:bg-gray-800/80 rounded-xl shadow p-4 flex flex-col md:flex-row md:items-end gap-4 mb-6 border">
+    <div className="bg-white/80 dark:bg-gray-800/80 rounded-xl shadow p-4 flex flex-col md:flex-row md:items-end gap-6 mb-6 border">
       {/* Search */}
       <div className="flex-1">
         <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -36,53 +53,46 @@ export default function SearchFilterBar({
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
-          {/* Icon */}
           <MagnifyingGlassIcon className="w-5 h-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
         </div>
       </div>
       {/* Department Filter */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-gray-700 mb-2">
           Departments
         </label>
-        <select
-          multiple
-          className="border rounded px-3 py-2 w-48 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white dark:bg-gray-900"
-          value={selectedDepartments}
-          onChange={(e) =>
-            setSelectedDepartments(
-              Array.from(e.target.selectedOptions, (opt) => opt.value)
-            )
-          }
-        >
+        <div className="flex flex-wrap gap-2">
           {departments.map((dept) => (
-            <option key={dept} value={dept}>
-              {dept}
-            </option>
+            <label key={dept} className="flex items-center gap-1 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={selectedDepartments.includes(dept)}
+                onChange={() => toggleDepartment(dept)}
+                className="accent-blue-500"
+              />
+              <span className="text-sm">{dept}</span>
+            </label>
           ))}
-        </select>
+        </div>
       </div>
       {/* Rating Filter */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="block text-sm font-medium text-gray-700 mb-2">
           Ratings
         </label>
-        <select
-          multiple
-          className="border rounded px-3 py-2 w-32 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white dark:bg-gray-900"
-          value={selectedRatings.map(String)}
-          onChange={(e) =>
-            setSelectedRatings(
-              Array.from(e.target.selectedOptions, (opt) => Number(opt.value))
-            )
-          }
-        >
+        <div className="flex flex-wrap gap-2">
           {ratings.map((r) => (
-            <option key={r} value={r}>
-              {r} ★
-            </option>
+            <label key={r} className="flex items-center gap-1 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={selectedRatings.includes(r)}
+                onChange={() => toggleRating(r)}
+                className="accent-yellow-400"
+              />
+              <span className="text-sm">{r} <span className="text-yellow-400">★</span></span>
+            </label>
           ))}
-        </select>
+        </div>
       </div>
     </div>
   );
