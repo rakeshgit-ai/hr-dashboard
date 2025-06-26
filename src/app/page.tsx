@@ -7,6 +7,7 @@ import { useBookmarkStore } from "@/store/bookmarkStore";
 import { useSearchFilterStore } from "@/store/searchFilterStore";
 import { useAuthStore } from "@/store/authStore";
 import CreateUserModal from "@/components/CreateUserModal";
+import { useCreateUserModal } from "@/context/CreateUserModalContext";
 
 type User = {
   id: number;
@@ -32,6 +33,7 @@ function getRandomRating() {
 export default function HomePage() {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const router = useRouter();
+  const { show, close } = useCreateUserModal();
 
   React.useEffect(() => {
     if (!isAuthenticated) {
@@ -42,7 +44,6 @@ export default function HomePage() {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [showCreateUser, setShowCreateUser] = useState(false);
 
   // Zustand bookmark store
   const { bookmarks, addBookmark, removeBookmark, isBookmarked } = useBookmarkStore();
@@ -112,12 +113,9 @@ export default function HomePage() {
         selectedRatings={selectedRatings}
         setSelectedRatings={setSelectedRatings}
       />
-      <button className="btn btn-primary" onClick={() => setShowCreateUser(true)}>
-        + Create User
-      </button>
       <CreateUserModal
-        open={showCreateUser}
-        onClose={() => setShowCreateUser(false)}
+        open={show}
+        onClose={close}
         onCreate={user => setUsers(prev => [
           ...prev,
           { ...user, id: prev.length + 100, age: 18 } // <-- add age here
@@ -153,7 +151,6 @@ export default function HomePage() {
           ))}
         </main>
       )}
-
     </div>
   );
 }

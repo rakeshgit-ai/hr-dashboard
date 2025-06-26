@@ -6,6 +6,8 @@ import "./globals.css";
 import Link from "next/link";
 import { useAuthStore } from "@/store/authStore";
 import { usePathname } from "next/navigation";
+import { CreateUserModalProvider } from "@/context/CreateUserModalContext";
+import CreateUserNavButton from "@/components/CreateUserNavButton";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,16 +30,23 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        {/* Navigation Bar - only show if not on /login */}
-        {pathname !== "/login" && (
-          <nav className="flex gap-4 p-4 bg-gray-100 dark:bg-gray-900">
-            <Link href="/" className="font-semibold hover:underline">Home</Link>
-            <Link href="/bookmarks" className="font-semibold hover:underline">Bookmarks</Link>
-            <Link href="/analytics" className="font-semibold hover:underline">Analytics</Link>
-            <button onClick={logout} className="btn btn-outline">Logout</button>
-          </nav>
-        )}
-        {children}
+        <CreateUserModalProvider>
+          {/* Navigation Bar - only show if not on /login */}
+          {pathname !== "/login" && (
+            <nav className="flex items-center justify-between p-4 bg-gray-100 dark:bg-gray-900">
+              <div className="flex gap-4">
+                <Link href="/" className="font-semibold hover:underline">Home</Link>
+                <Link href="/bookmarks" className="font-semibold hover:underline">Bookmarks</Link>
+                <Link href="/analytics" className="font-semibold hover:underline">Analytics</Link>
+              </div>
+              <div className="flex gap-2">
+                <CreateUserNavButton />
+                <button onClick={logout} className="btn btn-outline">Logout</button>
+              </div>
+            </nav>
+          )}
+          {children}
+        </CreateUserModalProvider>
       </body>
     </html>
   );
