@@ -29,6 +29,8 @@ function getRandomRating() {
 
 export default function HomePage() {
   const [users, setUsers] = useState<User[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
   // Zustand bookmark store
@@ -46,8 +48,13 @@ export default function HomePage() {
   } = useSearchFilterStore();
 
   useEffect(() => {
+    setLoading(true);
+    setError(null);
     fetch("https://dummyjson.com/users?limit=20")
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch users");
+        return res.json();
+      })
       .then((data) => {
         const usersWithExtras = data.users.map((u: any) => ({
           id: u.id,
@@ -59,6 +66,11 @@ export default function HomePage() {
           rating: getRandomRating(),
         }));
         setUsers(usersWithExtras);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
       });
   }, []);
 
@@ -89,22 +101,35 @@ export default function HomePage() {
         selectedRatings={selectedRatings}
         setSelectedRatings={setSelectedRatings}
       />
-      <main className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {filteredUsers.map((user) => (
-          <UserCard
-            key={user.id}
-            user={user}
-            onView={() => router.push(`/employee/${user.id}`)}
-            onBookmark={() =>
-              isBookmarked(user.id)
-                ? removeBookmark(user.id)
-                : addBookmark(user.id)
-            }
-            onPromote={() => alert(`Promote ${user.firstName}`)}
-            isBookmarked={isBookmarked(user.id)}
-          />
-        ))}
-      </main>
+      {loading && (
+        <div className="flex justify-center items-center h-40">
+          <span className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mr-2"></span>
+          Loading users...
+        </div>
+      )}
+      {error && (
+        <div className="text-red-500 text-center my-4">
+          Error: {error}
+        </div>
+      )}
+      {!loading && !error && (
+        <main className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          {filteredUsers.map((user) => (
+            <UserCard
+              key={user.id}
+              user={user}
+              onView={() => router.push(`/employee/${user.id}`)}
+              onBookmark={() =>
+                isBookmarked(user.id)
+                  ? removeBookmark(user.id)
+                  : addBookmark(user.id)
+              }
+              onPromote={() => alert(`Promote ${user.firstName}`)}
+              isBookmarked={isBookmarked(user.id)}
+            />
+          ))}
+        </main>
+      )}
     </div>
   );
 }

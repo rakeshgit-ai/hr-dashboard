@@ -28,11 +28,18 @@ function getRandomRating() {
 
 export default function AnalyticsPage() {
   const [users, setUsers] = useState<User[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const { bookmarks } = useBookmarkStore();
 
   useEffect(() => {
+    setLoading(true);
+    setError(null);
     fetch("https://dummyjson.com/users?limit=20")
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch users");
+        return res.json();
+      })
       .then((data) => {
         const usersWithExtras = data.users.map((u: any) => ({
           id: u.id,
@@ -44,6 +51,11 @@ export default function AnalyticsPage() {
           rating: getRandomRating(),
         }));
         setUsers(usersWithExtras);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(err.message);
+        setLoading(false);
       });
   }, []);
 
@@ -63,63 +75,76 @@ export default function AnalyticsPage() {
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-6">📊 Analytics</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Department-wise Average Ratings */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow p-6">
-          <h2 className="text-lg font-semibold mb-4">Department-wise Average Ratings</h2>
-          <Bar
-            data={{
-              labels: departments,
-              datasets: [
-                {
-                  label: "Average Rating",
-                  data: deptAverages,
-                  backgroundColor: "rgba(59, 130, 246, 0.7)",
-                },
-              ],
-            }}
-            options={{
-              responsive: true,
-              plugins: {
-                legend: { display: false },
-                title: { display: false },
-              },
-              scales: {
-                y: { min: 0, max: 5, ticks: { stepSize: 1 } },
-              },
-            }}
-          />
+      {loading && (
+        <div className="flex justify-center items-center h-40">
+          <span className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mr-2"></span>
+          Loading analytics...
         </div>
-        {/* Bookmark Trends */}
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow p-6">
-          <h2 className="text-lg font-semibold mb-4">Bookmark Trends (Mocked)</h2>
-          <Line
-            data={{
-              labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-              datasets: [
-                {
-                  label: "Bookmarks",
-                  data: bookmarkTrends,
-                  borderColor: "rgba(16, 185, 129, 1)",
-                  backgroundColor: "rgba(16, 185, 129, 0.2)",
-                  tension: 0.4,
-                  fill: true,
-                },
-              ],
-            }}
-            options={{
-              responsive: true,
-              plugins: {
-                legend: { display: false },
-                title: { display: false },
-              },
-              scales: {
-                y: { beginAtZero: true },
-              },
-            }}
-          />
+      )}
+      {error && (
+        <div className="text-red-500 text-center my-4">
+          Error: {error}
         </div>
-      </div>
+      )}
+      {!loading && !error && (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {/* Department-wise Average Ratings */}
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow p-6">
+            <h2 className="text-lg font-semibold mb-4">Department-wise Average Ratings</h2>
+            <Bar
+              data={{
+                labels: departments,
+                datasets: [
+                  {
+                    label: "Average Rating",
+                    data: deptAverages,
+                    backgroundColor: "rgba(59, 130, 246, 0.7)",
+                  },
+                ],
+              }}
+              options={{
+                responsive: true,
+                plugins: {
+                  legend: { display: false },
+                  title: { display: false },
+                },
+                scales: {
+                  y: { min: 0, max: 5, ticks: { stepSize: 1 } },
+                },
+              }}
+            />
+          </div>
+          {/* Bookmark Trends */}
+          <div className="bg-white dark:bg-gray-800 rounded-xl shadow p-6">
+            <h2 className="text-lg font-semibold mb-4">Bookmark Trends (Mocked)</h2>
+            <Line
+              data={{
+                labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+                datasets: [
+                  {
+                    label: "Bookmarks",
+                    data: bookmarkTrends,
+                    borderColor: "rgba(16, 185, 129, 1)",
+                    backgroundColor: "rgba(16, 185, 129, 0.2)",
+                    tension: 0.4,
+                    fill: true,
+                  },
+                ],
+              }}
+              options={{
+                responsive: true,
+                plugins: {
+                  legend: { display: false },
+                  title: { display: false },
+                },
+                scales: {
+                  y: { beginAtZero: true },
+                },
+              }}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
