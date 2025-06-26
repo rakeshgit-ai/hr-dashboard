@@ -64,7 +64,47 @@ Open `http://localhost:3000` in your browser.
 
 ## 📸 Screenshots
 
-![alt text](<Screenshot 2025-06-26 173641-1.png>)
+
+<p align="center">
+  <img src="public/screenshots/Runing.png" width="600"/>
+</p>
+
+### 🔐 Login Page
+
+<p align="center">
+  <img src="public/screenshots/login.png" width="600"/>
+</p>
+
+### 🏠 Dashboard
+
+<p align="center">
+  <img src="public/screenshots/homepage.png" width="600"/>
+</p>
+
+### 📌 Bookmarks Page
+
+<p align="center">
+  <img src="public/screenshots/bookmarkpage.png" width="600"/>
+</p>
+
+### 📊 Analytics Page
+
+<p align="center">
+  <img src="public/screenshots/analitycspage.png" width="600"/>
+</p>
+
+### ➕ Add New Employee
+
+<p align="center">
+  <img src="public/screenshots/createNewUser.png" width="600"/>
+</p>
+
+### 👤 Employee Details Page
+
+<p align="center">
+  <img src="public/screenshots/employDetails.png" width="600"/>
+</p>
+
 ## 📦 Submission
 
 - **GitHub Repository Link:**
