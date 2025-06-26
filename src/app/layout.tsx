@@ -75,21 +75,3 @@ function CreateUserModalWrapper({ departments }: { departments: string[] }) {
     />
   );
 }
-
-export function SomeProtectedPage() {
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  const router = useRouter();
-  const [checkedAuth, setCheckedAuth] = useState(false);
-
-  useEffect(() => {
-    if (!isAuthenticated) {
-      router.push("/login");
-    } else {
-      setCheckedAuth(true);
-    }
-  }, [isAuthenticated, router]);
-
-  if (!checkedAuth) return null;
-
-  // ...rest of your page...
-}
