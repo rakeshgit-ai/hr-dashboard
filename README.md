@@ -1,36 +1,128 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# HR Dashboard (Advanced)
 
-## Getting Started
+## 🔧 Tech Stack
 
-First, run the development server:
+- **React (with Next.js App Router)**
+- **Tailwind CSS**
+- **JavaScript (ES6+)**
+- **State Management:** Zustand
+- **Optional Bonus:** Chart.js, NextAuth.js
+
+---
+
+## 🚀 Challenge: Build a Mini HR Performance Dashboard
+
+A dashboard for HR Managers to track employee performance, manage bookmarks, and view detailed insights.
+
+---
+
+## 🎯 Core Features
+
+### 1. 🏠 Dashboard Homepage (`/`)
+- Fetches and displays dummy user data.
+- User cards show: Full Name, Email, Age, Department, Performance Rating (stars), and actions: View, Bookmark, Promote.
+
+### 2. 🔍 Search & Filter
+- Search bar to filter users by name, email, or department (case-insensitive).
+- Multi-select filter by department and performance rating.
+
+### 3. 👤 Dynamic User Details Page (`/employee/[id]`)
+- Detailed profile: Address, Phone, Bio, Past performance history.
+- Performance rating as stars and color-coded badges.
+- Tabbed UI: Overview, Projects, Feedback (dynamic loading, mock data).
+
+### 4. 📌 Bookmark Manager (`/bookmarks`)
+- Lists all bookmarked employees.
+- Allows removing bookmarks, “Promote”, and “Assign to Project” actions.
+
+### 5. 📊 Analytics Page (`/analytics`)
+- Chart.js analytics: Department-wise average ratings, bookmark trends (mocked).
+- (Optional) Server-side rendering or static generation.
+
+---
+
+## ⚙️ Tech Requirements
+
+- **Next.js App Router**
+- **Client-side data fetching**
+- **Custom hooks** (Zustand store as `useBookmarkStore`)
+- **Reusable components** (UserCard, SearchFilterBar, Button)
+- **Responsive design** (Mobile to Desktop)
+- **Dark/Light mode** (Tailwind classes)
+
+---
+
+## 🧠 Advanced Expectations
+
+- Proper state management (Zustand)
+- Component-level loading & error states
+- Modular folder structure (`components/`, `store/`, `app/`)
+- Form handling (Feedback tab)
+- Responsive and keyboard-accessible
+
+---
+
+## ⭐️ Bonus (Extra Points)
+
+- Authentication (NextAuth.js or mock login)
+- “Create User” modal/page with validation
+- Pagination or infinite scroll
+- Animated tab/content transitions
+
+---
+
+## 📦 Setup Instructions
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📁 Project Structure
 
-## Learn More
+```
+src/
+  app/
+    page.tsx                # Dashboard
+    bookmarks/page.tsx      # Bookmarks Manager
+    employee/[id]/page.tsx  # Employee Details
+    analytics/page.tsx      # Analytics (if implemented)
+    layout.tsx              # App Layout
+  components/
+    UserCard.tsx
+    SearchFilterBar.tsx
+  store/
+    bookmarkStore.ts        # Zustand store
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## ✅ Features Implemented
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- All core features and tech requirements are implemented as per client requirements.
+- Zustand is used for global bookmark state.
+- Responsive, dark/light mode, and modular codebase.
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📸 Screenshots
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+_Add screenshots here to showcase the dashboard, bookmarks, and analytics pages._
+
+---
+
+## 📤 Deploy
+
+Deployed on Vercel: [your-vercel-link](https://your-vercel-link.vercel.app)
+
+---
+
+## 📚 Learn More
+
+- [Next.js Documentation](https://nextjs.org/docs)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Zustand](https://docs.pmnd.rs/zustand/getting-started/introduction)

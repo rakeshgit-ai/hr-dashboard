@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import UserCard from "@/components/UserCard";
 import SearchFilterBar from "@/components/SearchFilterBar";
 import { useRouter } from "next/navigation";
+import { useBookmarkStore } from "@/store/bookmarkStore";
+import { useSearchFilterStore } from "@/store/searchFilterStore";
 
 type User = {
   id: number;
@@ -27,22 +29,21 @@ function getRandomRating() {
 
 export default function HomePage() {
   const [users, setUsers] = useState<User[]>([]);
-  const [bookmarks, setBookmarks] = useState<number[]>([]);
-  const [search, setSearch] = useState("");
-  const [selectedDepartments, setSelectedDepartments] = useState<string[]>([]);
-  const [selectedRatings, setSelectedRatings] = useState<number[]>([]);
   const router = useRouter();
 
-  // Load bookmarks from localStorage on mount
-  useEffect(() => {
-    const saved = localStorage.getItem("bookmarks");
-    if (saved) setBookmarks(JSON.parse(saved));
-  }, []);
+  // Zustand bookmark store
+  const { bookmarks, addBookmark, removeBookmark, isBookmarked } = useBookmarkStore();
 
-  // Save bookmarks to localStorage whenever they change
-  useEffect(() => {
-    localStorage.setItem("bookmarks", JSON.stringify(bookmarks));
-  }, [bookmarks]);
+  // Zustand search/filter store
+  const {
+    search,
+    setSearch,
+    selectedDepartments,
+    setSelectedDepartments,
+    selectedRatings,
+    setSelectedRatings,
+    resetFilters,
+  } = useSearchFilterStore();
 
   useEffect(() => {
     fetch("https://dummyjson.com/users?limit=20")
@@ -60,12 +61,6 @@ export default function HomePage() {
         setUsers(usersWithExtras);
       });
   }, []);
-
-  const handleBookmark = (id: number) => {
-    setBookmarks((prev) =>
-      prev.includes(id) ? prev.filter((bid) => bid !== id) : [...prev, id]
-    );
-  };
 
   // Filter logic
   const filteredUsers = users.filter((user) => {
@@ -100,9 +95,13 @@ export default function HomePage() {
             key={user.id}
             user={user}
             onView={() => router.push(`/employee/${user.id}`)}
-            onBookmark={() => handleBookmark(user.id)}
+            onBookmark={() =>
+              isBookmarked(user.id)
+                ? removeBookmark(user.id)
+                : addBookmark(user.id)
+            }
             onPromote={() => alert(`Promote ${user.firstName}`)}
-            isBookmarked={bookmarks.includes(user.id)}
+            isBookmarked={isBookmarked(user.id)}
           />
         ))}
       </main>
