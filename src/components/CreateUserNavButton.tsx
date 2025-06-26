@@ -6,7 +6,7 @@ export default function CreateUserNavButton() {
   const { open } = useCreateUserModal();
   return (
     <button className="btn btn-primary" onClick={open}>
-      + Create User
+      Add Employee
     </button>
   );
 }

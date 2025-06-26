@@ -33,7 +33,7 @@ export default function RootLayout({
         <CreateUserModalProvider>
           {/* Navigation Bar - only show if not on /login */}
           {pathname !== "/login" && (
-            <nav className="flex items-center justify-between p-4 bg-gray-100 dark:bg-gray-900">
+            <nav className="sticky top-0 z-50 flex items-center justify-between p-4 bg-gray-100 dark:bg-gray-900">
               <div className="flex gap-4">
                 <Link href="/" className="font-semibold hover:underline">Home</Link>
                 <Link href="/bookmarks" className="font-semibold hover:underline">Bookmarks</Link>
