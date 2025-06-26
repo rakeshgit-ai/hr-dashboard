@@ -32,6 +32,7 @@ export default function RootLayout({
         <nav className="flex gap-4 p-4 bg-gray-100 dark:bg-gray-900">
           <Link href="/" className="font-semibold hover:underline">Dashboard</Link>
           <Link href="/bookmarks" className="font-semibold hover:underline">Bookmarks</Link>
+          <Link href="/analytics" className="font-semibold hover:underline">Analytics</Link>
         </nav>
         {children}
       </body>
