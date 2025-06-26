@@ -9,6 +9,8 @@ import { usePathname } from "next/navigation";
 import { CreateUserModalProvider, useCreateUserModal } from "@/context/CreateUserModalContext";
 import CreateUserNavButton from "@/components/CreateUserNavButton";
 import CreateUserModal from "@/components/CreateUserModal";
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -72,4 +74,22 @@ function CreateUserModalWrapper({ departments }: { departments: string[] }) {
       departments={departments}
     />
   );
+}
+
+export function SomeProtectedPage() {
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const router = useRouter();
+  const [checkedAuth, setCheckedAuth] = useState(false);
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.push("/login");
+    } else {
+      setCheckedAuth(true);
+    }
+  }, [isAuthenticated, router]);
+
+  if (!checkedAuth) return null;
+
+  // ...rest of your page...
 }
