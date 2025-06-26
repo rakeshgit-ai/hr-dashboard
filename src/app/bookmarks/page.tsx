@@ -4,6 +4,8 @@ import UserCard from "@/components/UserCard";
 import { useBookmarkStore } from "@/store/bookmarkStore";
 import { useAuthStore } from "@/store/authStore";
 import { useRouter } from "next/navigation";
+import SearchFilterBar from "@/components/SearchFilterBar";
+import { useSearchFilterStore } from "@/store/searchFilterStore";
 
 type User = {
   id: number;
@@ -16,6 +18,7 @@ type User = {
 };
 
 const departments = ["HR", "Engineering", "Sales", "Marketing", "Finance"];
+const ratings = [1, 2, 3, 4, 5];
 
 function getRandomDepartment() {
   return departments[Math.floor(Math.random() * departments.length)];
@@ -32,6 +35,14 @@ export default function BookmarksPage() {
   const { bookmarks, removeBookmark, isBookmarked } = useBookmarkStore();
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const router = useRouter();
+  const {
+    search,
+    setSearch,
+    selectedDepartments,
+    setSelectedDepartments,
+    selectedRatings,
+    setSelectedRatings,
+  } = useSearchFilterStore();
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -74,11 +85,28 @@ export default function BookmarksPage() {
     alert(`Assign ${user.firstName} to project`);
   };
 
-  const bookmarkedUsers = users.filter((u) => isBookmarked(u.id));
+  const filteredUsers = users.filter((user) => {
+    const matchesSearch = user.firstName.toLowerCase().includes(search.toLowerCase());
+    const matchesDepartment = selectedDepartments.length === 0 || selectedDepartments.includes(user.department);
+    const matchesRating = selectedRatings.length === 0 || selectedRatings.includes(user.rating);
+    return matchesSearch && matchesDepartment && matchesRating;
+  });
+
+  const bookmarkedUsers = filteredUsers.filter((u) => isBookmarked(u.id));
 
   return (
     <div className="p-4">
       <h1 className="text-2xl font-bold mb-4">Bookmarked Employees</h1>
+      <SearchFilterBar
+        search={search}
+        setSearch={setSearch}
+        departments={departments}
+        selectedDepartments={selectedDepartments}
+        setSelectedDepartments={setSelectedDepartments}
+        ratings={ratings}
+        selectedRatings={selectedRatings}
+        setSelectedRatings={setSelectedRatings}
+      />
       {loading && (
         <div className="flex justify-center items-center h-40">
           <span className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mr-2"></span>
