@@ -40,7 +40,7 @@ export default function SearchFilterBar({
   };
 
   return (
-    <div className="bg-white/80 dark:bg-gray-800/80 rounded-xl shadow p-4 flex flex-col md:flex-row md:items-end gap-6 mb-6 border">
+    <div className="sticky top-[64px] z-40 bg-white/80 dark:bg-gray-800/80 rounded-xl shadow p-4 flex flex-col md:flex-row md:items-end gap-6 mb-6 border backdrop-blur">
       {/* Search */}
       <div className="flex-1">
         <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -89,7 +89,10 @@ export default function SearchFilterBar({
                 onChange={() => toggleRating(r)}
                 className="accent-yellow-400"
               />
-              <span className="text-sm">{r} <span className="text-yellow-400">★</span></span>
+              <span className="text-sm">
+                {r}{" "}
+                <span className="text-yellow-400">★</span>
+              </span>
             </label>
           ))}
         </div>

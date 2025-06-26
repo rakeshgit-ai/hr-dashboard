@@ -6,8 +6,9 @@ import "./globals.css";
 import Link from "next/link";
 import { useAuthStore } from "@/store/authStore";
 import { usePathname } from "next/navigation";
-import { CreateUserModalProvider } from "@/context/CreateUserModalContext";
+import { CreateUserModalProvider, useCreateUserModal } from "@/context/CreateUserModalContext";
 import CreateUserNavButton from "@/components/CreateUserNavButton";
+import CreateUserModal from "@/components/CreateUserModal";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,6 +20,8 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const departments = ["HR", "Engineering", "Sales", "Marketing", "Finance"];
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -26,6 +29,12 @@ export default function RootLayout({
 }>) {
   const logout = useAuthStore((state) => state.logout);
   const pathname = usePathname();
+  const { show, close } = useCreateUserModal();
+
+  const handleCreateUser = (user: any) => {
+    // Implement user creation logic or just close the modal
+    close();
+  };
 
   return (
     <html lang="en">
@@ -45,6 +54,13 @@ export default function RootLayout({
               </div>
             </nav>
           )}
+          {/* Place the modal here so it's available everywhere */}
+          <CreateUserModal
+            open={show}
+            onClose={close}
+            onCreate={handleCreateUser}
+            departments={departments}
+          />
           {children}
         </CreateUserModalProvider>
       </body>
