@@ -35,10 +35,13 @@ export default function AnalyticsPage() {
   const { bookmarks } = useBookmarkStore();
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const router = useRouter();
+  const [checkedAuth, setCheckedAuth] = useState(false);
 
   useEffect(() => {
     if (!isAuthenticated) {
       router.push("/login");
+    } else {
+      setCheckedAuth(true);
     }
   }, [isAuthenticated, router]);
 
@@ -81,6 +84,8 @@ export default function AnalyticsPage() {
 
   // Mocked bookmark trends (for demo)
   const bookmarkTrends = Array.from({ length: 7 }, (_, i) => Math.floor(Math.random() * bookmarks.length + 1));
+
+  if (!checkedAuth) return null;
 
   return (
     <div className="p-4">

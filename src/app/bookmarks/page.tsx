@@ -32,9 +32,10 @@ export default function BookmarksPage() {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { bookmarks, removeBookmark, isBookmarked } = useBookmarkStore();
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const router = useRouter();
+  const [checkedAuth, setCheckedAuth] = useState(false);
+  const { bookmarks, removeBookmark, isBookmarked } = useBookmarkStore();
   const {
     search,
     setSearch,
@@ -47,6 +48,8 @@ export default function BookmarksPage() {
   useEffect(() => {
     if (!isAuthenticated) {
       router.push("/login");
+    } else {
+      setCheckedAuth(true);
     }
   }, [isAuthenticated, router]);
 
@@ -76,6 +79,8 @@ export default function BookmarksPage() {
         setLoading(false);
       });
   }, []);
+
+  if (!checkedAuth) return null;
 
   // UI actions
   const handlePromote = (user: User) => {

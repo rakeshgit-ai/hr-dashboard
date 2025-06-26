@@ -34,10 +34,13 @@ export default function HomePage() {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const router = useRouter();
   const { show, close } = useCreateUserModal();
+  const [checkedAuth, setCheckedAuth] = useState(false);
 
   React.useEffect(() => {
     if (!isAuthenticated) {
       router.push("/login");
+    } else {
+      setCheckedAuth(true);
     }
   }, [isAuthenticated, router]);
 
@@ -100,6 +103,8 @@ export default function HomePage() {
       selectedRatings.length === 0 || selectedRatings.includes(user.rating);
     return matchesSearch && matchesDept && matchesRating;
   });
+
+  if (!checkedAuth) return null;
 
   return (
     <div className="p-4">
