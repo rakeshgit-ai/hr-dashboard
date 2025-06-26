@@ -5,6 +5,8 @@ import SearchFilterBar from "@/components/SearchFilterBar";
 import { useRouter } from "next/navigation";
 import { useBookmarkStore } from "@/store/bookmarkStore";
 import { useSearchFilterStore } from "@/store/searchFilterStore";
+import { useAuthStore } from "@/store/authStore";
+import CreateUserModal from "@/components/CreateUserModal";
 
 type User = {
   id: number;
@@ -28,10 +30,19 @@ function getRandomRating() {
 }
 
 export default function HomePage() {
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const router = useRouter();
+
+  React.useEffect(() => {
+    if (!isAuthenticated) {
+      router.push("/login");
+    }
+  }, [isAuthenticated, router]);
+
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
+  const [showCreateUser, setShowCreateUser] = useState(false);
 
   // Zustand bookmark store
   const { bookmarks, addBookmark, removeBookmark, isBookmarked } = useBookmarkStore();
@@ -101,6 +112,18 @@ export default function HomePage() {
         selectedRatings={selectedRatings}
         setSelectedRatings={setSelectedRatings}
       />
+      <button className="btn btn-primary" onClick={() => setShowCreateUser(true)}>
+        + Create User
+      </button>
+      <CreateUserModal
+        open={showCreateUser}
+        onClose={() => setShowCreateUser(false)}
+        onCreate={user => setUsers(prev => [
+          ...prev,
+          { ...user, id: prev.length + 100, age: 18 } // <-- add age here
+        ])}
+        departments={departments}
+      />
       {loading && (
         <div className="flex justify-center items-center h-40">
           <span className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mr-2"></span>
@@ -130,6 +153,7 @@ export default function HomePage() {
           ))}
         </main>
       )}
+
     </div>
   );
 }

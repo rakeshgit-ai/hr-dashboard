@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from "react";
 import UserCard from "@/components/UserCard";
 import { useBookmarkStore } from "@/store/bookmarkStore";
+import { useAuthStore } from "@/store/authStore";
+import { useRouter } from "next/navigation";
 
 type User = {
   id: number;
@@ -28,6 +30,14 @@ export default function BookmarksPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { bookmarks, removeBookmark, isBookmarked } = useBookmarkStore();
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.push("/login");
+    }
+  }, [isAuthenticated, router]);
 
   useEffect(() => {
     setLoading(true);

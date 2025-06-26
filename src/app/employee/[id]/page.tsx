@@ -1,6 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
+import { useAuthStore } from "@/store/authStore";
+
 const departments = ["HR", "Engineering", "Sales", "Marketing", "Finance"];
 
 function getRandomHistory() {
@@ -24,6 +26,9 @@ function getBadgeColor(rating: number) {
 export default function EmployeeDetailPage() {
   const params = useParams();
   const id = params.id;
+  const router = useRouter();
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -33,6 +38,12 @@ export default function EmployeeDetailPage() {
   const [feedback, setFeedback] = useState("");
   const [feedbackError, setFeedbackError] = useState("");
   const [feedbackSuccess, setFeedbackSuccess] = useState("");
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.push("/login");
+    }
+  }, [isAuthenticated, router]);
 
   useEffect(() => {
     setLoading(true);

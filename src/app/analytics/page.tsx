@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react";
 import { Bar, Line } from "react-chartjs-2";
 import { Chart, CategoryScale, LinearScale, BarElement, PointElement, LineElement, Title, Tooltip, Legend } from "chart.js";
 import { useBookmarkStore } from "@/store/bookmarkStore";
+import { useAuthStore } from "@/store/authStore";
+import { useRouter } from "next/navigation";
 
 Chart.register(CategoryScale, LinearScale, BarElement, PointElement, LineElement, Title, Tooltip, Legend);
 
@@ -31,6 +33,14 @@ export default function AnalyticsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { bookmarks } = useBookmarkStore();
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      router.push("/login");
+    }
+  }, [isAuthenticated, router]);
 
   useEffect(() => {
     setLoading(true);
