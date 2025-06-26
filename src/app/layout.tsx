@@ -29,12 +29,6 @@ export default function RootLayout({
 }>) {
   const logout = useAuthStore((state) => state.logout);
   const pathname = usePathname();
-  const { show, close } = useCreateUserModal();
-
-  const handleCreateUser = (user: any) => {
-    // Implement user creation logic or just close the modal
-    close();
-  };
 
   return (
     <html lang="en">
@@ -55,15 +49,27 @@ export default function RootLayout({
             </nav>
           )}
           {/* Place the modal here so it's available everywhere */}
-          <CreateUserModal
-            open={show}
-            onClose={close}
-            onCreate={handleCreateUser}
-            departments={departments}
-          />
+          <CreateUserModalWrapper departments={departments} />
           {children}
         </CreateUserModalProvider>
       </body>
     </html>
+  );
+}
+
+// Add this inside your layout.tsx file (or import it)
+function CreateUserModalWrapper({ departments }: { departments: string[] }) {
+  const { show, close } = useCreateUserModal();
+  const handleCreateUser = (user: any) => {
+    // Add your user creation logic here if needed
+    close();
+  };
+  return (
+    <CreateUserModal
+      open={show}
+      onClose={close}
+      onCreate={handleCreateUser}
+      departments={departments}
+    />
   );
 }
