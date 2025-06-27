@@ -66,6 +66,21 @@ export default function LoginPage() {
         {tab === "login" && (
           <form className="flex flex-col gap-4" onSubmit={handleLogin}>
             <h2 className="text-xl font-semibold mb-2 text-center">Welcome Back</h2>
+            {/* Highlighted credentials box */}
+            <div className="bg-blue-50 border border-blue-400 text-blue-700 rounded p-3 mb-2 text-center flex flex-col items-center">
+              <span className="font-semibold flex items-center gap-1">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M12 20a8 8 0 100-16 8 8 0 000 16z" />
+                </svg>
+                Demo Credentials
+              </span>
+              <span>
+                <b>User:</b> <span className="font-mono bg-white px-2 py-1 ">admin</span>
+              </span>
+              <span>
+                <b>Password:</b> <span className="font-mono bg-white px-2 py-1 ">admin</span>
+              </span>
+            </div>
             <input
               className="border rounded px-3 py-2 focus:ring-2 focus:ring-blue-400"
               placeholder="Username"
@@ -84,10 +99,7 @@ export default function LoginPage() {
             <button className="btn btn-primary w-full mt-2" type="submit">
               Login
             </button>
-            <div className="text-xs text-gray-500 text-center mt-2">
-              Use <span className="font-mono bg-gray-100 px-1 rounded">admin</span> /{" "}
-              <span className="font-mono bg-gray-100 px-1 rounded">admin</span> to login.
-            </div>
+            
           </form>
         )}
 
