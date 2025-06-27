@@ -28,7 +28,7 @@ A modern HR Dashboard built with Next.js, Zustand, and Tailwind CSS.
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/your-username/hr-dashboard.git
+   git clone https://github.com/rakeshgit-ai/hr-dashboard
    cd hr-dashboard
    ```
 2. **Install dependencies:**
@@ -108,14 +108,14 @@ Open `http://localhost:3000` in your browser.
 ## 📦 Submission
 
 - **GitHub Repository Link:**
-  - `https://github.com/your-username/hr-dashboard`
+  - `https://github.com/rakeshgit-ai/hr-dashboard`
 
   Make sure your repo is public and has a valid commit history.
 
 - **GitHub Deployment Link:**
-  - `https://your-hr-dashboard.vercel.app`
+  - `https://hr-dashboard-gd9o.vercel.app/login`
 
-  Deploy using Vercel, Netlify, or any other platform and share the live link.
+  Deployed in using Vercel
 
 ---
 
